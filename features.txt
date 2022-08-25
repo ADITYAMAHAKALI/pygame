@@ -1,0 +1,6 @@
+grid with trees
+sprites charachters
+movement of sprites 
+level selection
+based on level selection grid making
+based on level searching scheme
