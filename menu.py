@@ -5,10 +5,12 @@ from pygame_menu.examples import create_example_window
 from pygame_menu import sound
 from typing import Tuple, Any, Optional, List
 import k2
+from k35 import play_k35_random
 FPS = 60
 WINDOW_SIZE = (1200, 800)
 
 TYPE = ['RANDOM']
+PLAYERS =['2P']
 def on_button_click(value: str, text: Any = None) -> None:
     """
     Button event on menus.
@@ -42,6 +44,16 @@ def change_type(value: Tuple[Any, int], type: str) -> None:
     print(f'Selected type: "{selected}" ({type}) at index {index}')
     TYPE[0] = type
 
+def change_players(value: Tuple[Any, int], type: str) -> None:
+    """
+    Change number of players for the simulation.
+
+    :param value: Tuple containing the data of the selected object
+    :param difficulty: Optional parameter passed as argument to add_selector
+    """
+    selected, index = value
+    print(f'Selected type: "{selected}" ({type}) at index {index}')
+    PLAYERS[0] = type
 
 def play_k2(type: List, font: 'pygame.font.Font', test: bool = False) -> None:
     """
@@ -61,7 +73,6 @@ def play_k2(type: List, font: 'pygame.font.Font', test: bool = False) -> None:
 
     if type == 'RANDOM':
         f = font.render('Simulating random ', True, (255, 255, 255))
-        k2.play_k2_random()
     elif type == 'BFS':
         f = font.render('Simulating bfs', True, (255, 255, 255))
     elif type == 'DFS':
@@ -100,13 +111,13 @@ def make_long_menu() -> 'pygame_menu.Menu':
     )
     # menu_k2 
     menu_k2.add.button('Start',  # When pressing return -> play(DIFFICULTY[0], font)
-                         play_k2,
+                         k2.play_k2_random,
                          TYPE,
                          pygame.font.Font(pygame_menu.font.FONT_FRANCHISE, 22))
     menu_k2.add.selector('Select Type of Simulation ',
-                           [('1 - Random', 'RANDOM'),
-                            ('2 - BREADTH FIRST SEARCH', 'BFS'),
-                            ('3 - DEPTH FIRST SEARCH', 'DFS')],
+                           [('Random', 'RANDOM'),
+                            ('BREADTH FIRST SEARCH', 'BFS'),
+                            ('DEPTH FIRST SEARCH', 'DFS')],
                            onchange=change_type,
                            selector_id='select_difficulty')
     #menu_k2.add.button('Another menu', play_submenu)
@@ -119,6 +130,25 @@ def make_long_menu() -> 'pygame_menu.Menu':
         title='Class K-3 --> k-5',
         width=800
     )
+    # menu_k2 
+    menu_k35.add.button('Start',  # When pressing return -> play(DIFFICULTY[0], font)
+                         play_k35_random,
+                         PLAYERS,
+                         pygame.font.Font(pygame_menu.font.FONT_FRANCHISE, 22))
+    menu_k35.add.selector('Select number of players ',
+                           [('2 Players', '2P'),
+                            ('3 Players', '3P'),
+                            ('4 Players', '4P')],
+                           onchange=change_players,
+                           selector_id='select_np')
+    menu_k35.add.selector('Select level of Simulation ',
+                           [('Random', 'RANDOM'),
+                            ('BREADTH FIRST SEARCH', 'BFS'),
+                            ('DEPTH FIRST SEARCH', 'DFS')],
+                           onchange=change_type,
+                           selector_id='select_difficulty')
+    #menu_k2.add.button('Another menu', play_submenu)
+    menu_k35.add.button('Return to main menu', pygame_menu.events.BACK)
 
 
     menu_k68 = pygame_menu.Menu(

@@ -43,7 +43,7 @@ def select_random_movement(cell_width):
 def check(p1,p2):
     return (p1 == p2)
 
-def play_k2_random(*args,**kwargs):
+def play_k35_random(*args,**kwargs):
     pygame.init()
     SCREEN = pygame.display.set_mode(SIZE)
     CLOCK = pygame.time.Clock()
@@ -51,10 +51,13 @@ def play_k2_random(*args,**kwargs):
     run = True
     p1= player(0,0,"red.png",80)
     p2= player(WIDTH - 80,HEIGHT - 80,"purple.png",80)
+    p3= player(WIDTH - 80 ,0,"yellow.png",80)
     trail_p1 = []
     trail_p2 = []
+    trail_p3 = []
     red = (255,0,0)
     purple  = (128,0,128)
+    yellow = (0,255,255)
     ellipse_size = (0,0,10,10)
     while run:
         dt = CLOCK.tick(10)
@@ -70,18 +73,24 @@ def play_k2_random(*args,**kwargs):
         
         x1,y1 = select_random_movement(80)
         x2,y2 = select_random_movement(80)
+        x3,y3 = select_random_movement(80)
         p1.move(x1,y1,600,600,dt)
         p2.move(x2,y2,600,600,dt)
+        p3.move(x3,y3,600,600,dt)
         SCREEN.blit(p1.image,p1.image_loc)
         SCREEN.blit(p2.image,p2.image_loc)
+        SCREEN.blit(p3.image,p3.image_loc)
         trail_p1.append((p1.image_loc.centerx,p1.image_loc.centery))
         trail_p2.append((p2.image_loc.centerx,p2.image_loc.centery))
+        trail_p3.append((p3.image_loc.centerx,p3.image_loc.centery))
         for trail in trail_p1:
             pygame.draw.ellipse(greed_surface,red,(trail[0]-2,trail[1]-2,10,10))
         for trail in trail_p2:
-            pygame.draw.ellipse(greed_surface,purple,(trail[0]+2,trail[1]+2,10,10))   
+            pygame.draw.ellipse(greed_surface,purple,(trail[0]+2,trail[1]+2,10,10))  
+        for trail in trail_p3:
+            pygame.draw.ellipse(greed_surface,yellow,(trail[0]-2,trail[1]+2,10,10))  
         pygame.display.update()
-        if(check(p1.image_loc.center,p2.image_loc.center)):
+        if(check(p1.image_loc.center,p2.image_loc.center) or  check(p1.image_loc.center,p3.image_loc.center) or check(p3.image_loc.center,p2.image_loc.center)):
             time.sleep(2)
             run = False
     return
